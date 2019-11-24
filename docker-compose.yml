@@ -21,6 +21,9 @@ services:
       - PGPORT=5432
     # ports: 
     #   - '5000:5000'
+    depends_on:
+      - postgres
+      - redis
   client:
     build: 
       dockerfile: Dockerfile.dev
@@ -37,6 +40,11 @@ services:
     volumes: 
       - /app/node_modules
       - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
   nginx:
     restart: always
     build: 
